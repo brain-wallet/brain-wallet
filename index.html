@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Brain Wallet</title>
+    <style>
+      body {
+        background: linear-gradient(90deg, #69b7eb, #b3dbd3, #f4d6db);
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/preact-material-components@1.6.1/Button/style.css"
+    />
+  </head>
+  <body>
+    <script type="module">
+      // imports
+      import { h, Component, render } from 'https://unpkg.com/preact?module'
+
+      const title = 'Brain Wallet'
+
+      /** Example classful component */
+      class App extends Component {
+        componentDidMount () {
+          this.setState({ message: title })
+        }
+        render (props, state) {
+          return h('h1', { id: 'app' }, state.message)
+        }
+      }
+
+      render(h(App), document.body)
+    </script>
+  </body>
+</html>
