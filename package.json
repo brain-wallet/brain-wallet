@@ -1,6 +1,6 @@
 {
   "name": "@brain-wallet/brain-wallet",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "brain wallet",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,9 @@
     "url": "git+https://github.com/brain-wallet/brain-wallet.git"
   },
   "snowpack": {
-    "webDependencies": ["js-sha256"]
+    "webDependencies": [
+      "js-sha256"
+    ]
   },
   "author": "Melvin Carvalho <melvincarvalho@gmail.com> (https://melvincarvalho.com/#me)",
   "bugs": {
