@@ -25,7 +25,16 @@
           this.setState({ message: title })
         }
         render (props, state) {
-          return h('h1', { id: 'app' }, state.message)
+          return h(
+            'h1',
+            { id: 'app' },
+            state.message,
+            h('hr'),
+            h('input', { placeholder: 'passphrase' }),
+            h('hr'),
+            h('input', { placeholder: 'sha256' }),
+            h('hr')
+          )
         }
       }
 
