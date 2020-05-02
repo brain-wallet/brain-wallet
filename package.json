@@ -10,9 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/brain-wallet/brain-wallet.git"
   },
+  "snowpack": {
+    "webDependencies": ["js-sha256"]
+  },
   "author": "Melvin Carvalho <melvincarvalho@gmail.com> (https://melvincarvalho.com/#me)",
   "bugs": {
     "url": "https://github.com/brain-wallet/brain-wallet/issues"
   },
-  "homepage": "https://github.com/brain-wallet/brain-wallet#readme"
+  "homepage": "https://github.com/brain-wallet/brain-wallet#readme",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "js-sha256": "^0.9.0"
+  }
 }

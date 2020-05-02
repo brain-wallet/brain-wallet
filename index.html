@@ -16,8 +16,18 @@
     <script type="module">
       // imports
       import { h, Component, render } from 'https://unpkg.com/preact?module'
+      import htm from 'https://unpkg.com/htm@3.0.4/dist/htm.module.js'
+      import sha256 from './web_modules/js-sha256.js'
+
+      const html = htm.bind(h)
 
       const title = 'Brain Wallet'
+
+      function SomePreactComponent (props) {
+        return html`
+          <h1 style="color: red">Hello, World!</h1>
+        `
+      }
 
       /** Example classful component */
       class App extends Component {
@@ -32,8 +42,7 @@
             h('hr'),
             h('input', { placeholder: 'passphrase' }),
             h('hr'),
-            h('input', { placeholder: 'sha256' }),
-            h('hr')
+            h('input', { placeholder: 'sha256' })
           )
         }
       }
