@@ -9,7 +9,7 @@
 
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/preact-material-components@1.6.1/Button/style.css"
+      href="https://cdn.jsdelivr.net/npm/@ajusa/lit@latest/dist/lit.css"
     />
   </head>
   <body>
@@ -17,7 +17,35 @@
       // imports
       import { h, Component, render } from 'https://unpkg.com/preact?module'
       import htm from 'https://unpkg.com/htm@3.0.4/dist/htm.module.js'
-      import sha256 from './web_modules/js-sha256.js'
+
+      /**
+       * Gets sha256 string from string
+       *
+       * @param {string} str - A string to be hashed
+       * @returns {Promise <string>} A promise of a sha256 hash of that string
+       */
+      async function sha256 (str) {
+        var bytes = new TextEncoder('utf-8').encode(str)
+        const buf = await crypto.subtle.digest('SHA-256', bytes)
+        return Array.prototype.map
+          .call(new Uint8Array(buf), x => ('00' + x.toString(16)).slice(-2))
+          .join('')
+      }
+
+      /**
+       * Hex to bytes
+       *
+       * @param {string} str A hex string
+       * @returns {int[]} An array of bytes
+       */
+      function hexToBytes (str) {
+        var result = []
+        while (str.length >= 2) {
+          result.push(parseInt(str.substring(0, 2), 16))
+          str = str.substring(2, str.length)
+        }
+        return result
+      }
 
       const html = htm.bind(h)
 
@@ -36,13 +64,24 @@
         }
         render (props, state) {
           return h(
-            'h1',
-            { id: 'app' },
-            state.message,
-            h('hr'),
-            h('input', { placeholder: 'passphrase' }),
-            h('hr'),
-            h('input', { placeholder: 'sha256' })
+            'div',
+            { className: 'row' },
+            h(
+              'div',
+              { className: '6 col' },
+              h(
+                'h1',
+                { id: 'app' },
+                state.message,
+                h('br'),
+                h('input', {
+                  placeholder: 'passphrase',
+                  className: 'card w-100'
+                }),
+                h('br'),
+                h('input', { placeholder: 'sha256', className: 'card w-100' })
+              )
+            )
           )
         }
       }
