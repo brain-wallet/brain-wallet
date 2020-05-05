@@ -160,7 +160,8 @@ class App extends Component {
     let init = {
       pw: hash,
       sha256: hash ? sha256(hash) : '',
-      prefix: store2('prefix')
+      prefix: store2('prefix'),
+      target: store2('target')
     }
     this.state = {
       prefix: init.prefix,
@@ -172,7 +173,8 @@ class App extends Component {
       eckey: {},
       addressType: 'uncompressed',
       publicKeyVersion: 0,
-      title: 'Brain Wallet'
+      title: 'Brain Wallet',
+      target: init.target
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -187,7 +189,7 @@ class App extends Component {
   handleChange (e) {
     // start time
     let startTime = new Date().getTime()
-    var pw, prefix
+    var pw, prefix, target
 
     if (e.target) {
       var name = e.target.name
@@ -196,11 +198,18 @@ class App extends Component {
     if (name === 'pw') {
       pw = event.target.value
       prefix = this.state.prefix
-      this.setState({ pw: pw })
+      target = this.state.target
+      this.setState({ pw: event.target.value })
     } else if (name === 'prefix') {
       pw = this.state.pw
       prefix = event.target.value
+      target = this.state.target
       this.setState({ prefix: event.target.value })
+    } else if (name === 'target') {
+      pw = this.state.pw
+      prefix = this.state.prefix
+      target = event.target.target
+      this.setState({ target: event.target.value })
     }
 
     // calculate sha256
@@ -214,6 +223,7 @@ class App extends Component {
     )
 
     store2('prefix', this.state.prefix)
+    store2('target', this.state.target)
     // benchmark
     var timeTaken = new Date().getTime() - startTime
 
@@ -256,6 +266,7 @@ class App extends Component {
         <${this.PublicKeyBytesInput} />
         <${this.Ripe160Input} />
         <${this.PublicKeyAddressInput} />
+        <${this.TargetInput} />
         <br />
         <sub>${'Time: ' + this.state.timeTaken + 'ms'}</sub>
       </div>
@@ -284,6 +295,20 @@ class App extends Component {
         value=${this.state.pw}
         onInput=${this.handleChange}
         name="pw"
+      />
+    `
+  }
+
+  // target input
+  TargetInput = () => {
+    return html`
+      <input
+        placeholder="target"
+        class="card w-100"
+        autofocus="true"
+        value=${this.state.target}
+        onInput=${this.handleChange}
+        name="target"
       />
     `
   }
