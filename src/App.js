@@ -161,7 +161,8 @@ class App extends Component {
       pw: hash,
       sha256: hash ? sha256(hash) : '',
       prefix: store2('prefix'),
-      target: store2('target')
+      target: store2('target'),
+      suffix: store2('suffix')
     }
     this.state = {
       prefix: init.prefix,
@@ -174,7 +175,8 @@ class App extends Component {
       addressType: 'uncompressed',
       publicKeyVersion: 0,
       title: 'Brain Wallet',
-      target: init.target
+      target: init.target,
+      suffix: init.suffix
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -189,7 +191,7 @@ class App extends Component {
   handleChange (e) {
     // start time
     let startTime = new Date().getTime()
-    var pw, prefix, target
+    var pw, prefix, target, suffix
 
     if (e.target) {
       var name = e.target.name
@@ -199,21 +201,30 @@ class App extends Component {
       pw = event.target.value
       prefix = this.state.prefix
       target = this.state.target
+      suffix = this.state.suffix
       this.setState({ pw: event.target.value })
     } else if (name === 'prefix') {
       pw = this.state.pw
       prefix = event.target.value
       target = this.state.target
+      suffix = this.state.suffix
       this.setState({ prefix: event.target.value })
     } else if (name === 'target') {
       pw = this.state.pw
       prefix = this.state.prefix
       target = event.target.target
+      suffix = this.state.suffix
       this.setState({ target: event.target.value })
+    } else if (name === 'suffix') {
+      pw = this.state.pw
+      prefix = this.state.prefix
+      target = this.state.target
+      suffix = event.target.suffix
+      this.setState({ suffix: event.target.value })
     }
 
     // calculate sha256
-    var res = sha256(prefix + pw)
+    var res = sha256(prefix + pw + suffix)
     var sha256Bytes = hexToBytes(res)
 
     var keyPair = getKeyPairFromPW(
@@ -224,6 +235,7 @@ class App extends Component {
 
     store2('prefix', this.state.prefix)
     store2('target', this.state.target)
+    store2('suffix', this.state.suffix)
     // benchmark
     var timeTaken = new Date().getTime() - startTime
     // console.log(
@@ -270,6 +282,7 @@ class App extends Component {
       <div class="row">
         <${this.PrefixInput} />
         <${this.PwInput} />
+        <${this.SuffixInput} />
         <${this.Sha256Input} />
         <${this.Sha256InputAsBytes} />
         <${this.PrivateKeyInput} />
@@ -305,6 +318,20 @@ class App extends Component {
         value=${this.state.pw}
         onInput=${this.handleChange}
         name="pw"
+      />
+    `
+  }
+
+  // passphrase input
+  SuffixInput = () => {
+    return html`
+      <input
+        placeholder="suffix"
+        class="card w-100"
+        autofocus="true"
+        value=${this.state.suffix}
+        onInput=${this.handleChange}
+        name="suffix"
       />
     `
   }
