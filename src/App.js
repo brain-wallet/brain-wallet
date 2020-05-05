@@ -233,7 +233,10 @@ class App extends Component {
         <${this.PwInput} />
         <${this.Sha256Input} />
         <${this.Sha256InputAsBytes} />
-        <${this.PrivateKey} />
+        <${this.PrivateKeyInput} />
+        <${this.PublicKeyBytesInput} />
+        <${this.Ripe160Input} />
+        <${this.PublicKeyAddressInput} />
         <br />
         <sub>${'Time: ' + this.state.timeTaken + 'ms'}</sub>
       </div>
@@ -264,7 +267,7 @@ class App extends Component {
       />
     `
 
-  // sha 256 input
+  // sha 256 as bytes input
   Sha256InputAsBytes = () =>
     html`
       <input
@@ -275,14 +278,46 @@ class App extends Component {
       />
     `
 
-  // sha 256 input
-  PrivateKey = () =>
+  // private key input
+  PrivateKeyInput = () =>
     html`
       <input
-        placeholder="private key (BigInteger)"
+        placeholder="Private Key Base58 check Address"
         class="card w-100"
         disabled
         value="${this.state.privateKeyAddress}"
+      />
+    `
+
+  // public key as bytes input
+  PublicKeyBytesInput = () =>
+    html`
+      <input
+        placeholder="ECDSA Public Key as Bytes"
+        class="card w-100"
+        disabled
+        value="${this.state.publicKeyBytes}"
+      />
+    `
+  // ripe 160 input
+  Ripe160Input = () =>
+    html`
+      <input
+        placeholder="Ripe 160 hash of Public Key as Bytes"
+        class="card w-100"
+        disabled
+        value="${this.state.ripe160}"
+      />
+    `
+
+  // public key address input
+  PublicKeyAddressInput = () =>
+    html`
+      <input
+        placeholder="Public Key Base58 check Address"
+        class="card w-100"
+        disabled
+        value="${this.state.publicKeyAddress}"
       />
     `
 
