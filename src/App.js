@@ -264,8 +264,8 @@ class App extends Component {
     // )
 
     function success (a, b) {
-      if (a === b) {
-        alert('Success!', this.state.target, 'found!')
+      if (b.split(',').includes(a)) {
+        alert('Success!', a, 'found!')
       }
     }
 
