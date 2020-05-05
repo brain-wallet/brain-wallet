@@ -226,6 +226,9 @@ class App extends Component {
     store2('target', this.state.target)
     // benchmark
     var timeTaken = new Date().getTime() - startTime
+    if (keyPair.publicKey.address === this.state.target) {
+      alert('Success!', this.state.target, 'found!')
+    }
 
     // update state
     this.setState({
