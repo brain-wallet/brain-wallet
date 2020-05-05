@@ -1,6 +1,8 @@
 {
   "imports": {
     "js-sha256": "./js-sha256.js",
-    "spux": "./spux.js"
+    "spux": "./spux.js",
+    "store2": "./store2.js",
+    "styled-components": "./styled-components.js"
   }
 }

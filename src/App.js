@@ -2,6 +2,7 @@
 import { h, html, Component, render } from '../web_modules/spux.js'
 import Nav from '../src/components/Nav.js'
 import sha256 from '../web_modules/js-sha256.js'
+import store2 from '../web_modules/store2.js'
 
 // FUNCTIONS
 function getFragment () {
@@ -158,9 +159,11 @@ class App extends Component {
     let hash = getFragment()
     let init = {
       pw: hash,
-      sha256: hash ? sha256(hash) : ''
+      sha256: hash ? sha256(hash) : '',
+      prefix: store2('prefix')
     }
     this.state = {
+      prefix: init.prefix,
       pw: init.pw,
       sha256: init.sha256,
       sha256Bytes: [],
@@ -184,10 +187,24 @@ class App extends Component {
   handleChange (e) {
     // start time
     let startTime = new Date().getTime()
+    var pw, prefix
+
+    if (e.target) {
+      var name = e.target.name
+    }
+
+    if (name === 'pw') {
+      pw = event.target.value
+      prefix = this.state.prefix
+      this.setState({ pw: pw })
+    } else if (name === 'prefix') {
+      pw = this.state.pw
+      prefix = event.target.value
+      this.setState({ prefix: event.target.value })
+    }
 
     // calculate sha256
-    let pw = event.target.value
-    var res = sha256(pw)
+    var res = sha256(prefix + pw)
     var sha256Bytes = hexToBytes(res)
 
     var keyPair = getKeyPairFromPW(
@@ -196,12 +213,13 @@ class App extends Component {
       this.state.publicKeyVersion
     )
 
-    console.log(keyPair)
+    store2('prefix', this.state.prefix)
     // benchmark
     var timeTaken = new Date().getTime() - startTime
 
     // update state
     this.setState({
+      prefix: prefix,
       pw: pw,
       sha256: res,
       sha256Bytes: sha256Bytes,
@@ -230,6 +248,7 @@ class App extends Component {
   Form = props =>
     html`
       <div class="row">
+        <${this.PrefixInput} />
         <${this.PwInput} />
         <${this.Sha256Input} />
         <${this.Sha256InputAsBytes} />
@@ -242,6 +261,19 @@ class App extends Component {
       </div>
     `
 
+  // prefix input
+  PrefixInput = () => {
+    return html`
+      <input
+        placeholder="prefix"
+        class="card w-100"
+        value=${this.state.prefix}
+        onInput=${this.handleChange}
+        name="prefix"
+      />
+    `
+  }
+
   // passphrase input
   PwInput = () => {
     return html`
@@ -251,7 +283,7 @@ class App extends Component {
         autofocus="true"
         value=${this.state.pw}
         onInput=${this.handleChange}
-        key="PwInput"
+        name="pw"
       />
     `
   }

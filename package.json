@@ -13,7 +13,8 @@
   "snowpack": {
     "webDependencies": [
       "js-sha256",
-      "spux"
+      "spux",
+      "store2"
     ]
   },
   "author": "Melvin Carvalho <melvincarvalho@gmail.com> (https://melvincarvalho.com/#me)",
@@ -24,6 +25,8 @@
   "dependencies": {
     "crypto-js": "^4.0.0",
     "js-sha256": "^0.9.0",
-    "spux": "0.0.4"
+    "spux": "0.0.4",
+    "store2": "^2.11.1",
+    "styled-components": "^5.1.0"
   }
 }
