@@ -225,7 +225,8 @@ class App extends Component {
 
     // calculate sha256
     test = prefix + pw + suffix
-    console.log('prefix', prefix, 'pw', pw, 'suffix', suffix, 'test', test)
+    // console.log('prefix', prefix, 'pw', pw, 'suffix', suffix, 'test', test)
+    console.log('test', test)
     var res = sha256(test)
     var sha256Bytes = hexToBytes(res)
 
@@ -279,17 +280,19 @@ class App extends Component {
   }
 
   // form
+  // <${this.SuffixInput} />
+  // <${this.Sha256Input} />
+  // <${this.Sha256InputAsBytes} />
+  // <${this.PrivateKeyInput} />
+  // <${this.PublicKeyBytesInput} />
+  // <${this.Ripe160Input} />
+
   Form = props =>
     html`
       <div class="row">
         <${this.PrefixInput} />
         <${this.PwInput} />
         <${this.SuffixInput} />
-        <${this.Sha256Input} />
-        <${this.Sha256InputAsBytes} />
-        <${this.PrivateKeyInput} />
-        <${this.PublicKeyBytesInput} />
-        <${this.Ripe160Input} />
         <${this.PublicKeyAddressInput} />
         <${this.TargetInput} />
         <br />
