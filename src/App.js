@@ -7,6 +7,7 @@ import sha256 from '../web_modules/js-sha256.js'
 function getFragment () {
   return window.location.hash.substring(1)
 }
+
 /**
  * Hex to bytes
  *
@@ -20,6 +21,133 @@ function hexToBytes (str) {
     str = str.substring(2, str.length)
   }
   return result
+}
+
+/**
+ * Get encoded point
+ *
+ * @param {*} pt
+ * @param {*} compressed
+ * @returns {int[]} Array of bytes
+ */
+function getEncoded (pt, compressed) {
+  var x = pt.getX().toBigInteger()
+  var y = pt.getY().toBigInteger()
+  var enc = integerToBytes(x, 32)
+  if (compressed) {
+    if (y.isEven()) {
+      enc.unshift(0x02)
+    } else {
+      enc.unshift(0x03)
+    }
+  } else {
+    enc.unshift(0x04)
+    enc = enc.concat(integerToBytes(y, 32))
+  }
+  return enc
+}
+
+/**
+ * Get an EC Key from hash
+ *
+ * @param {string} hash
+ * @returns ECKey
+ */
+function getECKeyFromHash (hash) {
+  var eckey = new Bitcoin.ECKey(hexToBytes(hash))
+  return eckey
+}
+
+/**
+ * Get a private key address form hash
+ *
+ * @param {string} hash A hash
+ * @param {string} addressType A string of compressed or uncompressed
+ * @param {string} publicKeyVersion Version number of the public key
+ * @returns {Bitcoin.Address} A bitcoin private key address
+ */
+function getPrivateKeyAddressFromHash (hash, addressType, publicKeyVersion) {
+  const OFFSET = 128
+  var payload = hexToBytes(hash)
+  if (addressType === 'compressed') {
+    payload.push(0x01)
+  }
+  var sec = new Bitcoin.Address(payload)
+  sec.version = parseInt(publicKeyVersion) + OFFSET
+  return sec
+}
+
+/**
+ * Get public key from private
+ *
+ * @param {*} eckey
+ * @param {*} addressType
+ * @param {*} publicKeyVersion
+ * @returns {Bitcoin.Address} A bticoin public key address
+ */
+function getPublicKeyFromPrivate (eckey, addressType, publicKeyVersion) {
+  var curve = getSECCurveByName('secp256k1')
+  var publicKey = {}
+  var genPt = curve.getG().multiply(eckey.priv)
+  if (addressType === 'uncompressed') {
+    publicKey.pub = getEncoded(genPt, false)
+  } else {
+    publicKey.pub = getEncoded(genPt, true)
+  }
+
+  // get pub key hash
+  publicKey.ripe160 = Bitcoin.Util.sha256ripe160(publicKey.pub)
+
+  // get pub key address
+  var address = new Bitcoin.Address(publicKey.ripe160)
+  address.version = parseInt(publicKeyVersion)
+  publicKey.address = address
+  return publicKey
+}
+
+/**
+ * Gets a key pair from a hash
+ *
+ * @param {*} hash
+ * @param {*} addressType
+ * @param {*} publicKeyVersion
+ * @returns {*} A keypair
+ */
+function getKeyPairFromHash (hash, addressType, publicKeyVersion) {
+  var keyPair = {}
+  keyPair.hash = hash
+  // get privkey from hash
+  keyPair.privateKey = getECKeyFromHash(hash)
+
+  // get privateKey address
+  keyPair.privateKeyAddress = getPrivateKeyAddressFromHash(
+    hash,
+    addressType,
+    publicKeyVersion
+  )
+
+  // get pub key from private
+  keyPair.publicKey = getPublicKeyFromPrivate(
+    keyPair.privateKey,
+    addressType,
+    publicKeyVersion
+  )
+
+  return keyPair
+}
+
+/**
+ * Gets a key pair from a string using sha245 KDF
+ *
+ * @param {*} pw
+ * @param {*} addressType
+ * @param {*} publicKeyVersion
+ * @returns {*} A key pair
+ */
+function getKeyPairFromPW (pw, addressType, publicKeyVersion) {
+  var hash = sha256(pw, addressType, publicKeyVersion)
+  var keyPair = getKeyPairFromHash(hash, addressType, publicKeyVersion)
+  return keyPair
 }
 
 // APP
@@ -36,7 +164,11 @@ class App extends Component {
       pw: init.pw,
       sha256: init.sha256,
       sha256Bytes: [],
+      privateKey: '',
       timeTaken: 0,
+      eckey: {},
+      addressType: 'uncompressed',
+      publicKeyVersion: 0,
       title: 'Brain Wallet'
     }
     this.handleChange = this.handleChange.bind(this)
@@ -58,6 +190,13 @@ class App extends Component {
     var res = sha256(pw)
     var sha256Bytes = hexToBytes(res)
 
+    var keyPair = getKeyPairFromPW(
+      pw,
+      this.state.addressType,
+      this.state.publicKeyVersion
+    )
+
+    console.log(keyPair)
     // benchmark
     var timeTaken = new Date().getTime() - startTime
 
@@ -66,6 +205,15 @@ class App extends Component {
       pw: pw,
       sha256: res,
       sha256Bytes: sha256Bytes,
+      sha256: keyPair.hash,
+
+      privateKeyInt: keyPair.privateKey.priv,
+      privateKeyAddress: keyPair.privateKeyAddress,
+
+      publicKeyBytes: keyPair.publicKey.pub,
+      ripe160: keyPair.publicKey.ripe160,
+      publicKeyAddress: keyPair.publicKey.address,
+
       timeTaken: timeTaken
     })
   }
@@ -85,6 +233,7 @@ class App extends Component {
         <${this.PwInput} />
         <${this.Sha256Input} />
         <${this.Sha256InputAsBytes} />
+        <${this.PrivateKey} />
         <br />
         <sub>${'Time: ' + this.state.timeTaken + 'ms'}</sub>
       </div>
@@ -123,6 +272,17 @@ class App extends Component {
         class="card w-100"
         disabled
         value="${this.state.sha256Bytes}"
+      />
+    `
+
+  // sha 256 input
+  PrivateKey = () =>
+    html`
+      <input
+        placeholder="private key (BigInteger)"
+        class="card w-100"
+        disabled
+        value="${this.state.privateKeyAddress}"
       />
     `
 
