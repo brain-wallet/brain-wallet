@@ -1,92 +1,10 @@
 <html>
   <head>
-    <title>Brain Wallet</title>
-    <style>
-      body {
-        background: linear-gradient(90deg, #69b7eb, #b3dbd3, #f4d6db);
-      }
-    </style>
+    <title>sha256</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@ajusa/lit@latest/dist/lit.css"
-    />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <script type="module">
-      // imports
-      import { h, Component, render } from 'https://unpkg.com/preact?module'
-      import htm from 'https://unpkg.com/htm@3.0.4/dist/htm.module.js'
-
-      /**
-       * Gets sha256 string from string
-       *
-       * @param {string} str - A string to be hashed
-       * @returns {Promise <string>} A promise of a sha256 hash of that string
-       */
-      async function sha256 (str) {
-        var bytes = new TextEncoder('utf-8').encode(str)
-        const buf = await crypto.subtle.digest('SHA-256', bytes)
-        return Array.prototype.map
-          .call(new Uint8Array(buf), x => ('00' + x.toString(16)).slice(-2))
-          .join('')
-      }
-
-      /**
-       * Hex to bytes
-       *
-       * @param {string} str A hex string
-       * @returns {int[]} An array of bytes
-       */
-      function hexToBytes (str) {
-        var result = []
-        while (str.length >= 2) {
-          result.push(parseInt(str.substring(0, 2), 16))
-          str = str.substring(2, str.length)
-        }
-        return result
-      }
-
-      const html = htm.bind(h)
-
-      const title = 'Brain Wallet'
-
-      function SomePreactComponent (props) {
-        return html`
-          <h1 style="color: red">Hello, World!</h1>
-        `
-      }
-
-      /** Example classful component */
-      class App extends Component {
-        componentDidMount () {
-          this.setState({ message: title })
-        }
-        render (props, state) {
-          return h(
-            'div',
-            { className: 'row' },
-            h(
-              'div',
-              { className: '6 col' },
-              h(
-                'h1',
-                { id: 'app' },
-                state.message,
-                h('br'),
-                h('input', {
-                  placeholder: 'passphrase',
-                  className: 'card w-100'
-                }),
-                h('br'),
-                h('input', { placeholder: 'sha256', className: 'card w-100' })
-              )
-            )
-          )
-        }
-      }
-
-      render(h(App), document.body)
-    </script>
+    <script src="./src/App.js" type="module"></script>
   </body>
 </html>

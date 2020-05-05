@@ -1,5 +1,6 @@
 {
   "imports": {
-    "js-sha256": "./js-sha256.js"
+    "js-sha256": "./js-sha256.js",
+    "spux": "./spux.js"
   }
 }

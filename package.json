@@ -12,7 +12,8 @@
   },
   "snowpack": {
     "webDependencies": [
-      "js-sha256"
+      "js-sha256",
+      "spux"
     ]
   },
   "author": "Melvin Carvalho <melvincarvalho@gmail.com> (https://melvincarvalho.com/#me)",
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/brain-wallet/brain-wallet#readme",
   "dependencies": {
     "crypto-js": "^4.0.0",
-    "js-sha256": "^0.9.0"
+    "js-sha256": "^0.9.0",
+    "spux": "0.0.4"
   }
 }
