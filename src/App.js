@@ -22,7 +22,7 @@ class App extends Component {
       pw: init.pw,
       sha256: init.sha256,
       timeTaken: 0,
-      title: 'sha256'
+      title: 'Brain Wallet'
     }
     this.handleChange = this.handleChange.bind(this)
   }
