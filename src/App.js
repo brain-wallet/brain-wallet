@@ -191,7 +191,7 @@ class App extends Component {
   handleChange (e) {
     // start time
     let startTime = new Date().getTime()
-    var pw, prefix, target, suffix, test
+    var pw, prefix, target, suffix, test, keyPair
 
     if (e.target) {
       var name = e.target.name
@@ -227,15 +227,29 @@ class App extends Component {
     // calculate sha256
     test = prefix + pw + suffix
     // console.log('prefix', prefix, 'pw', pw, 'suffix', suffix, 'test', test)
-    console.log('test', test)
     var res = sha256(test)
     var sha256Bytes = hexToBytes(res)
 
-    var keyPair = getKeyPairFromPW(
-      test,
-      this.state.addressType,
-      this.state.publicKeyVersion
-    )
+    const s = suffix.split(',')
+    s.forEach(element => {
+      test = prefix + pw + element
+      console.log(test)
+      keyPair = getKeyPairFromPW(
+        test,
+        'uncompressed',
+        this.state.publicKeyVersion
+      )
+      console.log(keyPair.publicKey.address.toString(), 'uncompressed')
+      success(keyPair.publicKey.address.toString(), this.state.target)
+
+      keyPair = getKeyPairFromPW(
+        test,
+        'compressed',
+        this.state.publicKeyVersion
+      )
+      console.log(keyPair.publicKey.address.toString(), 'compressed')
+      success(keyPair.publicKey.address.toString(), this.state.target)
+    })
 
     store2('prefix', prefix)
     store2('target', target)
@@ -249,8 +263,10 @@ class App extends Component {
     //   this.state.target
     // )
 
-    if (keyPair.publicKey.address.toString() === this.state.target) {
-      alert('Success!', this.state.target, 'found!')
+    function success (a, b) {
+      if (a === b) {
+        alert('Success!', this.state.target, 'found!')
+      }
     }
 
     // update state
