@@ -197,12 +197,12 @@ class App extends Component {
       var name = e.target.name
     }
 
-    if (name === 'pw') {
-      pw = event.target.value
+    if (name === 'suffix') {
+      pw = this.state.pw
       prefix = this.state.prefix
       target = this.state.target
-      suffix = this.state.suffix
-      this.setState({ pw: event.target.value })
+      suffix = event.target.value
+      this.setState({ suffix: event.target.value })
     } else if (name === 'prefix') {
       pw = this.state.pw
       prefix = event.target.value
@@ -215,12 +215,13 @@ class App extends Component {
       target = event.target.target
       suffix = this.state.suffix
       this.setState({ target: event.target.value })
-    } else if (name === 'suffix') {
-      pw = this.state.pw
+      // } else if (name === 'pw') {
+    } else {
+      pw = event.target.value
       prefix = this.state.prefix
       target = this.state.target
-      suffix = event.target.value
-      this.setState({ suffix: event.target.value })
+      suffix = this.state.suffix
+      this.setState({ pw: event.target.value })
     }
 
     // calculate sha256
@@ -322,7 +323,6 @@ class App extends Component {
         autofocus="true"
         value=${this.state.pw}
         onInput=${this.handleChange}
-        name="pw"
       />
     `
   }
