@@ -191,7 +191,7 @@ class App extends Component {
   handleChange (e) {
     // start time
     let startTime = new Date().getTime()
-    var pw, prefix, target, suffix
+    var pw, prefix, target, suffix, test
 
     if (e.target) {
       var name = e.target.name
@@ -224,11 +224,13 @@ class App extends Component {
     }
 
     // calculate sha256
-    var res = sha256(prefix + pw + suffix)
+    test = prefix + pw + suffix
+    console.log('prefix', prefix, 'pw', pw, 'suffix', suffix, 'test', test)
+    var res = sha256(test)
     var sha256Bytes = hexToBytes(res)
 
     var keyPair = getKeyPairFromPW(
-      pw,
+      test,
       this.state.addressType,
       this.state.publicKeyVersion
     )
