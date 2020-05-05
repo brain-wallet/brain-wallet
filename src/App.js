@@ -219,7 +219,7 @@ class App extends Component {
       pw = this.state.pw
       prefix = this.state.prefix
       target = this.state.target
-      suffix = event.target.suffix
+      suffix = event.target.value
       this.setState({ suffix: event.target.value })
     }
 
@@ -235,9 +235,9 @@ class App extends Component {
       this.state.publicKeyVersion
     )
 
-    store2('prefix', this.state.prefix)
-    store2('target', this.state.target)
-    store2('suffix', this.state.suffix)
+    store2('prefix', prefix)
+    store2('target', target)
+    store2('suffix', suffix)
     // benchmark
     var timeTaken = new Date().getTime() - startTime
     // console.log(
@@ -330,7 +330,6 @@ class App extends Component {
       <input
         placeholder="suffix"
         class="card w-100"
-        autofocus="true"
         value=${this.state.suffix}
         onInput=${this.handleChange}
         name="suffix"
