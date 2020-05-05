@@ -7,6 +7,20 @@ import sha256 from '../web_modules/js-sha256.js'
 function getFragment () {
   return window.location.hash.substring(1)
 }
+/**
+ * Hex to bytes
+ *
+ * @param {string} str A hex string
+ * @returns {int[]} An array of bytes
+ */
+function hexToBytes (str) {
+  var result = []
+  while (str.length >= 2) {
+    result.push(parseInt(str.substring(0, 2), 16))
+    str = str.substring(2, str.length)
+  }
+  return result
+}
 
 // APP
 class App extends Component {
@@ -21,6 +35,7 @@ class App extends Component {
     this.state = {
       pw: init.pw,
       sha256: init.sha256,
+      sha256Bytes: [],
       timeTaken: 0,
       title: 'Brain Wallet'
     }
@@ -41,6 +56,7 @@ class App extends Component {
     // calculate sha256
     let pw = event.target.value
     var res = sha256(pw)
+    var sha256Bytes = hexToBytes(res)
 
     // benchmark
     var timeTaken = new Date().getTime() - startTime
@@ -49,6 +65,7 @@ class App extends Component {
     this.setState({
       pw: pw,
       sha256: res,
+      sha256Bytes: sha256Bytes,
       timeTaken: timeTaken
     })
   }
@@ -67,6 +84,7 @@ class App extends Component {
       <div class="row">
         <${this.PwInput} />
         <${this.Sha256Input} />
+        <${this.Sha256InputAsBytes} />
         <br />
         <sub>${'Time: ' + this.state.timeTaken + 'ms'}</sub>
       </div>
@@ -90,10 +108,21 @@ class App extends Component {
   Sha256Input = () =>
     html`
       <input
-        placeholder="sha256"
+        placeholder="secret exponent (sha256)"
         class="card w-100"
         disabled
         value="${this.state.sha256}"
+      />
+    `
+
+  // sha 256 input
+  Sha256InputAsBytes = () =>
+    html`
+      <input
+        placeholder="secret exponent as bytes (sha256)"
+        class="card w-100"
+        disabled
+        value="${this.state.sha256Bytes}"
       />
     `
 
