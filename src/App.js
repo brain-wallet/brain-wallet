@@ -8,7 +8,6 @@ import { getFragment, hexToBytes } from './functions.js'
 // FUNCTIONS
 // TODO #1: split out functions
 // TODO #2 create functions.js
-// TODO #7 move hexToBytes to functions.js
 
 /**
  * Get encoded point
