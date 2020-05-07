@@ -3,13 +3,11 @@ import { h, html, Component, render } from '../web_modules/spux.js'
 import Nav from '../src/components/Nav.js'
 import sha256 from '../web_modules/js-sha256.js'
 import store2 from '../web_modules/store2.js'
+import getFragment from './functions.js'
 
 // FUNCTIONS
 // TODO #1: split out functions
 // TODO #2 create functions.js
-function getFragment () {
-  return window.location.hash.substring(1)
-}
 
 /**
  * Hex to bytes
