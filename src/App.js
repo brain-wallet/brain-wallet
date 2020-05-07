@@ -5,6 +5,8 @@ import sha256 from '../web_modules/js-sha256.js'
 import store2 from '../web_modules/store2.js'
 
 // FUNCTIONS
+// TODO #1: split out functions
+// TODO #2 create functions.js
 function getFragment () {
   return window.location.hash.substring(1)
 }
