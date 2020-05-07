@@ -7,6 +7,7 @@ import store2 from '../web_modules/store2.js'
 // FUNCTIONS
 // TODO #1: split out functions
 // TODO #2 create functions.js
+// TODO #4 move getFragment to functions
 function getFragment () {
   return window.location.hash.substring(1)
 }
