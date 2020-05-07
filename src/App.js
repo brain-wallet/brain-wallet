@@ -3,26 +3,12 @@ import { h, html, Component, render } from '../web_modules/spux.js'
 import Nav from '../src/components/Nav.js'
 import sha256 from '../web_modules/js-sha256.js'
 import store2 from '../web_modules/store2.js'
-import getFragment from './functions.js'
+import { getFragment, hexToBytes } from './functions.js'
 
 // FUNCTIONS
 // TODO #1: split out functions
 // TODO #2 create functions.js
-
-/**
- * Hex to bytes
- *
- * @param {string} str A hex string
- * @returns {int[]} An array of bytes
- */
-function hexToBytes (str) {
-  var result = []
-  while (str.length >= 2) {
-    result.push(parseInt(str.substring(0, 2), 16))
-    str = str.substring(2, str.length)
-  }
-  return result
-}
+// TODO #7 move hexToBytes to functions.js
 
 /**
  * Get encoded point
