@@ -7,6 +7,7 @@ import { getFragment, hexToBytes } from './functions.js'
 
 // FUNCTIONS
 // TODO #1: split out functions
+// TODO #10 make bitcoinjs into a module
 
 /**
  * Get encoded point
