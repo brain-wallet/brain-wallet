@@ -215,7 +215,7 @@ class App extends Component {
     var res = sha256(test)
     var sha256Bytes = hexToBytes(res)
 
-    const s = suffix ? suffix.split(',') : ''
+    const s = suffix ? suffix.split(',') : ['']
     s.forEach(element => {
       test = prefix + pw + element
       console.log(test)
