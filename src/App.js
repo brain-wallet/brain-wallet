@@ -216,15 +216,19 @@ class App extends Component {
     var sha256Bytes = hexToBytes(res)
 
     const s = suffix ? suffix.split(',') : ['']
+    let results = []
     s.forEach(element => {
       test = prefix + pw + element
-      console.log(test)
+      let row = {}
+      row.test = test
       keyPair = getKeyPairFromPW(
         test,
         'uncompressed',
         this.state.publicKeyVersion
       )
-      console.log(keyPair.publicKey.address.toString(), 'uncompressed')
+      row.uncompressed = keyPair.publicKey.address.toString()
+
+      // console.log(keyPair.publicKey.address.toString(), 'uncompressed')
       success(keyPair.publicKey.address.toString(), this.state.target)
 
       keyPair = getKeyPairFromPW(
@@ -232,9 +236,13 @@ class App extends Component {
         'compressed',
         this.state.publicKeyVersion
       )
-      console.log(keyPair.publicKey.address.toString(), 'compressed')
+      // console.log(keyPair.publicKey.address.toString(), 'compressed')
+      row.compressed = keyPair.publicKey.address.toString()
       success(keyPair.publicKey.address.toString(), this.state.target)
+      results.push(row)
+      console.table(row)
     })
+    // console.table(results)
 
     store2('prefix', prefix)
     store2('target', target)
