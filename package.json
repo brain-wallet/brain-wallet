@@ -1,6 +1,6 @@
 {
   "name": "@brain-wallet/brain-wallet",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "brain wallet",
   "main": "index.js",
   "scripts": {
