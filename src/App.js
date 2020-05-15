@@ -146,8 +146,8 @@ class App extends Component {
       pw: hash,
       sha256: hash ? sha256(hash) : '',
       prefix: store2('prefix'),
-      target: store2('target') || [''],
-      suffix: store2('suffix') || ['']
+      target: store2('target') || '',
+      suffix: store2('suffix') || ''
     }
     this.state = {
       prefix: init.prefix,
