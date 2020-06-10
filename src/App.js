@@ -1,6 +1,6 @@
 // IMPORTS
 import { h, html, Component, render } from '../web_modules/spux.js'
-import Nav from '../src/components/Nav.js'
+import Navbar from '../src/components/Navbar.js'
 import sha256 from '../web_modules/js-sha256.js'
 import store2 from '../web_modules/store2.js'
 import { getFragment, hexToBytes } from './functions.js'
@@ -285,7 +285,7 @@ class App extends Component {
   // Main app
   Main = () => {
     return html`
-      <div><${Nav} title="${this.state.title}" /><${this.Form} /></div>
+      <div><${Navbar} title="${this.state.title}" /><${this.Form} /></div>
     `
   }
 
