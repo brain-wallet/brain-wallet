@@ -3688,4 +3688,7 @@ EventEmitter.augment(TransactionDatabase.prototype),
     ;(this.txs = []), (this.txIndex = {}), $(this).trigger('update')
   })
 
+Bitcoin.getSECCurveByName = getSECCurveByName
+Bitcoin.integerToBytes = integerToBytes
+
 export default Bitcoin

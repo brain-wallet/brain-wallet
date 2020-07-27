@@ -20,7 +20,7 @@ import Bitcoin from '../web_modules/bitcoin-min.module.js'
 function getEncoded (pt, compressed) {
   var x = pt.getX().toBigInteger()
   var y = pt.getY().toBigInteger()
-  var enc = integerToBytes(x, 32)
+  var enc = Bitcoin.integerToBytes(x, 32)
   if (compressed) {
     if (y.isEven()) {
       enc.unshift(0x02)
@@ -29,7 +29,7 @@ function getEncoded (pt, compressed) {
     }
   } else {
     enc.unshift(0x04)
-    enc = enc.concat(integerToBytes(y, 32))
+    enc = enc.concat(Bitcoin.integerToBytes(y, 32))
   }
   return enc
 }
@@ -73,7 +73,7 @@ function getPrivateKeyAddressFromHash (hash, addressType, publicKeyVersion) {
  * @returns {Bitcoin.Address} A bticoin public key address
  */
 function getPublicKeyFromPrivate (eckey, addressType, publicKeyVersion) {
-  var curve = getSECCurveByName('secp256k1')
+  var curve = Bitcoin.getSECCurveByName('secp256k1')
   var publicKey = {}
   var genPt = curve.getG().multiply(eckey.priv)
   if (addressType === 'uncompressed') {
